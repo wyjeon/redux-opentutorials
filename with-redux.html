@@ -14,8 +14,11 @@
 </head>
 <body>
   <div id="red"></div>
+  <div id="blue"></div>
+  <div id="green"></div>
   <script>
 function reducer(state, action) {
+  console.log(state ,action)
   if(state === undefined) {
     //초기화 단계
     return {color: 'yellow'}
@@ -24,7 +27,7 @@ function reducer(state, action) {
   //state를 복제하고 복제한 것의 color가 red인 것을 return
   var newState;
   if(action.type === 'CHANGE_COLOR') {
-    newState = Object.assign({}, state, {color: 'red'});
+    newState = Object.assign({}, state, {color: action.color});
   }
   return newState;
 }
@@ -41,7 +44,36 @@ function red(){
     </div>
   `;
 }
+store.subscribe(red);
 red();
+
+function blue(){
+  var state = store.getState();
+  document.querySelector('#blue').innerHTML = `
+    <div class="container" id="component_blue" style="background-color:${state.color}">
+      <h1>blue</h1>
+      <input type="button" value="fire" onclick="
+        store.dispatch({type:'CHANGE_COLOR', color:'blue'});
+      ">
+    </div>
+  `;
+}
+store.subscribe(blue);
+blue();
+
+function green(){
+  var state = store.getState();
+  document.querySelector('#green').innerHTML = `
+    <div class="container" id="component_green" style="background-color:${state.color}">
+      <h1>green</h1>
+      <input type="button" value="fire" onclick="
+        store.dispatch({type:'CHANGE_COLOR', color:'green'});
+      ">
+    </div>
+  `;
+}
+store.subscribe(green);
+green();
   </script>
 </body>
 </html>
