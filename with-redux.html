@@ -17,6 +17,8 @@
   <div id="blue"></div>
   <div id="green"></div>
   <script>
+
+//2. reducer(): state값 초기화    
 function reducer(state, action) {
   console.log(state ,action)
   if(state === undefined) {
@@ -24,6 +26,7 @@ function reducer(state, action) {
     return {color: 'yellow'}
   }
 
+  //4. 기존 state값을 action값 변경
   //state를 복제하고 복제한 것의 color가 red인 것을 return
   var newState;
   if(action.type === 'CHANGE_COLOR') {
@@ -31,7 +34,12 @@ function reducer(state, action) {
   }
   return newState;
 }
-var store = Redux.createStore(reducer);
+
+//1. createStore(): store생성, reducer호출
+var store = Redux.createStore(
+  reducer, 
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+);
 
 function red(){
   var state = store.getState();
@@ -42,8 +50,10 @@ function red(){
         store.dispatch({type:'CHANGE_COLOR', color:'red'});
       ">
     </div>
-  `;
+  `; //3. dispatch(): action생성, reducer호출
 }
+
+//5. subscribe(): rerendering
 store.subscribe(red);
 red();
 
