@@ -65,10 +65,21 @@ function control() {
 }
 
 function article() {
+  var state = store.getState(); //5.
+  var i = 0;
+  var articleTitle, articleDesc;
+  while(i<state.contents.length) {
+    if(state.contents[i].id === state.selected_id) {
+      articleTitle = state.contents[i].title;
+      articleDesc = state.contents[i].desc;
+      break;
+    }
+    i= i+1;
+  }
   document.querySelector('#content').innerHTML = `
   <article>
-    <h2>HTML</h2>
-    HTML is...
+    <h2>${articleTitle}</h2>
+    ${articleDesc}
   </article>
   `;
 }
@@ -76,7 +87,7 @@ function article() {
 function reducer(state, action) {
   if(state === undefined) { //2.
     return {
-      selected_id: null,
+      selected_id: 2,
       contents: [
         {id:1, title:"HTML", desc:"HTML is.."},
         {id:2, title:"CSS", desc:"CSS is.."},
@@ -88,10 +99,10 @@ function reducer(state, action) {
   if(action.type === "SELECT") { //4.
     newState = Object.assign(newState, state, {selected_id: action.id});
   }
-  console.log(action, state, newState);
   return newState;
 }
 var store = Redux.createStore(reducer); //1.
+store.subscribe(article); //5.
 
 subject();
 TOC();
